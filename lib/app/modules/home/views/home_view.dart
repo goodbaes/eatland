@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:webapp/app/modules/basket/controllers/basket_controller.dart';
 import 'package:webapp/app/modules/home/controllers/home_controller.dart';
 import 'package:webapp/app/resources/app_colors.dart';
 import 'package:webapp/app/resources/text_styles.dart';
@@ -10,6 +10,7 @@ import 'package:webapp/widgets/burger_menu/nav_button.dart';
 import 'package:webapp/widgets/category_widget.dart';
 import 'package:webapp/widgets/custom_inkwell.dart';
 import 'package:webapp/widgets/food_item.dart';
+import 'package:webapp/widgets/loading/food_loading.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -111,6 +112,7 @@ class HomeView extends GetView<HomeController> {
         Flexible(
             flex: 50,
             child: CustomInkWell(
+              onTap: () => controller.openSearch(),
               bgChild: Container(
                   height: 70,
                   width: 70,
@@ -127,70 +129,98 @@ class HomeView extends GetView<HomeController> {
 
   Widget _buildFoodControll() {
     return Obx(
-      () => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AutoSizeText(
-                  controller
-                      .categoryList[controller.currentCategory.value].name,
-                  style: AppText.h4,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                const Icon(Icons.filter_list),
-              ],
-            ),
-          ),
-          Flexible(
-              flex: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'View all',
-                    style: AppText.burgerMenuItemLabelinInActive,
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  const SizedBox.square(
-                    dimension: 50,
-                    child: CustomInkWell(
-                      child:
-                          const IconButtonMenu(icon: Icons.arrow_forward_ios),
-                    ),
-                  ),
-                ],
-              )),
-        ],
-      ),
+      () => FoodControll(
+          foodcontroller: controller,
+          name: controller.categoryList[controller.currentCategory.value].name),
     );
   }
 
   Widget _buildFood() {
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 0.9,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+    return Obx(
+      () => !controller.isLoading.value
+          ? Expanded(
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 500),
+                opacity: controller.isLoading.value ? 0 : 1,
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 0.9,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemCount: controller.foodList.length,
+                  itemBuilder: (context, index) {
+                    var data = controller.foodList[index];
+                    return FoodItemWidget(
+                        data: data,
+                        inBasket: BasketController.to.isInBasket(data.name),
+                        onPressed: () => BasketController.to.addToBasket(data));
+                  },
+                ),
+              ),
+            )
+          : const FoodLoading(),
+    );
+  }
+}
+
+class FoodControll extends StatelessWidget {
+  const FoodControll({
+    Key? key,
+    required this.foodcontroller,
+    this.name = '',
+  }) : super(key: key);
+
+  final HomeController foodcontroller;
+  final String name;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AutoSizeText(
+                name,
+                style: AppText.h4,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                  onTap: () => foodcontroller.openFilter(),
+                  child: const Icon(Icons.filter_list)),
+            ],
+          ),
         ),
-        itemCount: controller.foodList.length,
-        itemBuilder: (context, index) {
-          var data = controller.foodList[index];
-          return FoodItemWidget(data: data);
-        },
-      ),
+        Flexible(
+            flex: 50,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'View all',
+                  style: AppText.burgerMenuItemLabelinInActive,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                const SizedBox.square(
+                  dimension: 50,
+                  child: CustomInkWell(
+                    child: const IconButtonMenu(icon: Icons.arrow_forward_ios),
+                  ),
+                ),
+              ],
+            )),
+      ],
     );
   }
 }

@@ -6,8 +6,12 @@ import 'package:webapp/app/resources/app_colors.dart';
 import 'package:webapp/app/resources/text_styles.dart';
 
 class FoodItemWidget extends StatelessWidget {
-  const FoodItemWidget({Key? key, required this.data}) : super(key: key);
+  const FoodItemWidget(
+      {Key? key, required this.data, this.inBasket = false, this.onPressed})
+      : super(key: key);
   final FoodItem data;
+  final bool inBasket;
+  final Function? onPressed;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,8 +75,10 @@ class FoodItemWidget extends StatelessWidget {
                                             dimension: 40,
                                             child: FloatingActionButton(
                                               backgroundColor: Colors.black,
-                                              child: Icon(Icons.add),
-                                              onPressed: null,
+                                              child: Icon(inBasket
+                                                  ? Icons.check
+                                                  : Icons.add),
+                                              onPressed: onPressed?.call(),
                                             )),
                                       ],
                                     ),

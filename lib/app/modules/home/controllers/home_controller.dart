@@ -1,14 +1,40 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webapp/widgets/loading/food_loading.dart';
 
 const String imgUrlTest = "assets/images/food.png";
 const String imgUrlP = "assets/images/meat.png";
 const String imgUrlM = "assets/images/meat.png";
 
+void showDialogTemp() {
+  Get.defaultDialog(
+      content: const SizedBox.square(
+          dimension: 300,
+          child: ColoredBox(color: Colors.white, child: FoodLoading())));
+}
+
 class HomeController extends GetxController {
+  final isLoading = true.obs;
+
   final currentCategory = 0.obs;
   void setCurrentCategory(int index) {
     currentCategory.value = index;
-    update();
+    getFoodList(1);
+  }
+
+  void openFilter() {
+    showDialogTemp();
+  }
+
+  void openSearch() {
+    showDialogTemp();
+  }
+
+  void getFoodList(i) {
+    isLoading.value = true;
+    Future.delayed(Duration(seconds: i), () {
+      isLoading.value = false;
+    });
   }
 
   CategoryItem get currentCategoryItem => categoryList[currentCategory.value];
@@ -39,6 +65,12 @@ class HomeController extends GetxController {
     FoodItem('LoveSalat', imgUrlTest, '11',
         'Add an assets subsection to the flutter section like thissubsection to the fluttersubsection to the flutter'),
   ];
+
+  @override
+  void onReady() {
+    getFoodList(8);
+    super.onReady();
+  }
 }
 
 class CategoryItem {

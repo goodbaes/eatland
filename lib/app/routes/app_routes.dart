@@ -8,9 +8,11 @@ abstract class Routes {
 
   static const COUNTER = _Paths.COUNTER;
   static const HOME = _Paths.HOME;
+  static const BASKET = _Paths.BASKET;
 }
 
 abstract class _Paths {
   static const COUNTER = '/counter';
   static const HOME = '/home';
+  static const BASKET = '/basket';
 }
