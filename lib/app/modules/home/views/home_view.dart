@@ -83,12 +83,15 @@ class HomeView extends GetView<HomeController> {
               itemBuilder: (context, index) {
                 var date = controller.categoryList[index];
                 var isActive = snapshot.data == index;
-                return isActive
-                    ? CategoryItemWidget(date: date, isActive: true)
-                    : CategoryInkWellItemWidget(
-                        onTap: () => controller.setCurrentCategory(index),
-                        date: date,
-                      );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: isActive
+                      ? CategoryItemWidget(date: date, isActive: true)
+                      : CategoryInkWellItemWidget(
+                          onTap: () => controller.setCurrentCategory(index),
+                          date: date,
+                        ),
+                );
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(
@@ -141,31 +144,40 @@ class HomeView extends GetView<HomeController> {
     return Obx(
       () => !controller.isLoading.value
           ? Expanded(
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 500),
-                opacity: controller.isLoading.value ? 0 : 1,
-                child: Container(
-                  width: 800,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: Get.width / 25,
-                      // mainAxisExtent: 1,
-                      mainAxisSpacing: Get.width / 25,
-                      childAspectRatio: 0.7,
-                    ),
-                    itemCount: controller.foodList.length,
-                    itemBuilder: (context, index) {
-                      var data = controller.foodList[index];
-                      return FoodItemWidget(
-                          data: data,
-                          inBasket: BasketController.to.isInBasket(data.name),
-                          onPressed: () =>
-                              BasketController.to.addToBasket(data));
-                    },
-                  ),
-                ),
-              ),
+              child: LayoutBuilder(builder: (context, c) {
+                return Container(
+                    width: c.maxWidth < 300
+                        ? 100
+                        : c.maxWidth < 700
+                            ? 400
+                            : c.maxWidth < 1000
+                                ? 800
+                                : 800,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: c.maxWidth < 300
+                            ? 1
+                            : c.maxWidth < 700
+                                ? 2
+                                : c.maxWidth < 1000
+                                    ? 3
+                                    : 3,
+                        crossAxisSpacing: Get.width / 25,
+                        // mainAxisExtent: 1,
+                        mainAxisSpacing: Get.width / 25,
+                        childAspectRatio: 0.7,
+                      ),
+                      itemCount: controller.foodList.length,
+                      itemBuilder: (context, index) {
+                        var data = controller.foodList[index];
+                        return FoodItemWidget(
+                            data: data,
+                            inBasket: BasketController.to.isInBasket(data.name),
+                            onPressed: () =>
+                                BasketController.to.addToBasket(data));
+                      },
+                    ));
+              }),
             )
           : const FoodLoading(),
     );

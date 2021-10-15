@@ -28,9 +28,9 @@ class CategoryItemWidget extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: AppColors.darkColor.withOpacity(isActive ? 0.2 : 0),
-                blurRadius: 30,
+                blurRadius: 20,
                 spreadRadius: 1,
-                offset: const Offset(0, 15),
+                offset: const Offset(10, 10),
               ),
             ],
           ),

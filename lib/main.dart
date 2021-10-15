@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:responsive_framework/responsive_framework.dart';
 import 'package:webapp/app/modules/basket/controllers/basket_controller.dart';
+import 'package:webapp/app/modules/counter/controllers/counter_controller.dart';
 import 'package:webapp/app/routes/app_pages.dart';
 
 void main() {
   Get.put(BasketController());
+  Get.put(MainController());
   runApp(const MyApp());
 }
 

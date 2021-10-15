@@ -8,7 +8,7 @@ import 'package:webapp/app/resources/app_colors.dart';
 import 'package:webapp/app/resources/text_styles.dart';
 import 'package:webapp/widgets/burger_menu/nav_button.dart';
 
-class CounterView extends GetWidget<CounterController> {
+class CounterView extends GetWidget<MainController> {
   const CounterView({Key? key}) : super(key: key);
 
   @override
