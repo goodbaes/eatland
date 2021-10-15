@@ -36,7 +36,7 @@ class HomeView extends GetView<HomeController> {
                         height: 20,
                       ),
                       Flexible(
-                        flex: 20,
+                        flex: 25,
                         child: _buildCategory(),
                       ),
                       const SizedBox(
@@ -148,7 +148,7 @@ class HomeView extends GetView<HomeController> {
                 return Container(
                     width: c.maxWidth < 300
                         ? 100
-                        : c.maxWidth < 700
+                        : c.maxWidth < 600
                             ? 400
                             : c.maxWidth < 1000
                                 ? 800
@@ -157,7 +157,7 @@ class HomeView extends GetView<HomeController> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: c.maxWidth < 300
                             ? 1
-                            : c.maxWidth < 700
+                            : c.maxWidth < 600
                                 ? 2
                                 : c.maxWidth < 1000
                                     ? 3

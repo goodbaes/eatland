@@ -13,20 +13,22 @@ class FoodLoading extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(
-          height: 200,
+          height: 160,
           child: RiveAnimation.asset(
             'assets/animation/runner.riv',
           ),
         ),
-        SizedBox(
-          height: 100,
-          child: DefaultTextStyle(
-            style: AppText.h1,
-            child: AnimatedTextKit(animatedTexts: [
-              RotateAnimatedText(' Loading '),
-              RotateAnimatedText(' Wait a little more '),
-              RotateAnimatedText(' Finish soon '),
-            ]),
+        FittedBox(
+          child: SizedBox(
+            height: 50,
+            child: DefaultTextStyle(
+              style: AppText.h1,
+              child: AnimatedTextKit(animatedTexts: [
+                RotateAnimatedText(' Loading '),
+                RotateAnimatedText(' Wait a little more '),
+                RotateAnimatedText(' Finish soon '),
+              ]),
+            ),
           ),
         )
       ],
