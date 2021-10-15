@@ -20,52 +20,54 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: AppColors.lightColor,
       body: Center(
-        child: Row(
-          children: [
-            Flexible(
-              flex: 70,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 20,
-                      child: _buildTitle(),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Flexible(
-                      flex: 20,
-                      child: _buildCategory(),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 60,
-                      child: Column(
-                        children: [
-                          _buildFoodControll(),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          _buildFood(),
-                        ],
+        child: Expanded(
+          child: Row(
+            children: [
+              Flexible(
+                flex: 70,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 20,
+                        child: _buildTitle(),
                       ),
-                    )
-                  ]),
-            ),
-            const SizedBox(
-              width: 60,
-            ),
-            Flexible(
-              flex: 30,
-              child: Container(
-                color: Colors.blue,
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Flexible(
+                        flex: 20,
+                        child: _buildCategory(),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        flex: 60,
+                        child: Column(
+                          children: [
+                            _buildFoodControll(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            _buildFood(),
+                          ],
+                        ),
+                      )
+                    ]),
               ),
-            ),
-          ],
+              const SizedBox(
+                width: 60,
+              ),
+              Flexible(
+                flex: 30,
+                child: Container(
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -142,21 +144,26 @@ class HomeView extends GetView<HomeController> {
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 500),
                 opacity: controller.isLoading.value ? 0 : 1,
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 0.9,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+                child: Container(
+                  width: 800,
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: Get.width / 25,
+                      // mainAxisExtent: 1,
+                      mainAxisSpacing: Get.width / 25,
+                      childAspectRatio: 0.7,
+                    ),
+                    itemCount: controller.foodList.length,
+                    itemBuilder: (context, index) {
+                      var data = controller.foodList[index];
+                      return FoodItemWidget(
+                          data: data,
+                          inBasket: BasketController.to.isInBasket(data.name),
+                          onPressed: () =>
+                              BasketController.to.addToBasket(data));
+                    },
                   ),
-                  itemCount: controller.foodList.length,
-                  itemBuilder: (context, index) {
-                    var data = controller.foodList[index];
-                    return FoodItemWidget(
-                        data: data,
-                        inBasket: BasketController.to.isInBasket(data.name),
-                        onPressed: () => BasketController.to.addToBasket(data));
-                  },
                 ),
               ),
             )
@@ -182,43 +189,48 @@ class FoodControll extends StatelessWidget {
       children: [
         Flexible(
           flex: 50,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AutoSizeText(
-                name,
-                style: AppText.h4,
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              GestureDetector(
-                  onTap: () => foodcontroller.openFilter(),
-                  child: const Icon(Icons.filter_list)),
-            ],
-          ),
-        ),
-        Flexible(
-            flex: 50,
+          child: FittedBox(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'View all',
-                  style: AppText.burgerMenuItemLabelinInActive,
+                AutoSizeText(
+                  name,
+                  style: AppText.h4,
                 ),
                 const SizedBox(
                   width: 20,
                 ),
-                const SizedBox.square(
-                  dimension: 50,
-                  child: CustomInkWell(
-                    child: const IconButtonMenu(icon: Icons.arrow_forward_ios),
-                  ),
-                ),
+                GestureDetector(
+                    onTap: () => foodcontroller.openFilter(),
+                    child: const Icon(Icons.filter_list)),
               ],
+            ),
+          ),
+        ),
+        Flexible(
+            flex: 50,
+            child: FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'View all',
+                    style: AppText.burgerMenuItemLabelinInActive,
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  const SizedBox.square(
+                    dimension: 50,
+                    child: CustomInkWell(
+                      child:
+                          const IconButtonMenu(icon: Icons.arrow_forward_ios),
+                    ),
+                  ),
+                ],
+              ),
             )),
       ],
     );

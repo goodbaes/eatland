@@ -61,7 +61,7 @@ class CounterView extends GetWidget<CounterController> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundColor: AppColors.lightColor,
                 radius: 40,
                 foregroundImage: NetworkImage(
@@ -77,28 +77,30 @@ class CounterView extends GetWidget<CounterController> {
         ),
         Flexible(
           flex: 30,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              NavButton(
-                icon: CupertinoIcons.home,
-                text: 'Home',
-                isActive: controller.index.value == 0,
-                onPressed: () => controller.setIndex(0),
-              ),
-              NavButton(
-                icon: CupertinoIcons.doc_text,
-                text: 'Menu',
-                isActive: controller.index.value == 1,
-                onPressed: () => controller.setIndex(1),
-              ),
-              NavButton(
-                icon: CupertinoIcons.settings,
-                text: 'Settings',
-                isActive: controller.index.value == 2,
-                onPressed: () => controller.setIndex(2),
-              ),
-            ],
+          child: FittedBox(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                NavButton(
+                  icon: CupertinoIcons.home,
+                  text: 'Home',
+                  isActive: controller.index.value == 0,
+                  onPressed: () => controller.setIndex(0),
+                ),
+                NavButton(
+                  icon: CupertinoIcons.doc_text,
+                  text: 'Menu',
+                  isActive: controller.index.value == 1,
+                  onPressed: () => controller.setIndex(1),
+                ),
+                NavButton(
+                  icon: CupertinoIcons.settings,
+                  text: 'Settings',
+                  isActive: controller.index.value == 2,
+                  onPressed: () => controller.setIndex(2),
+                ),
+              ],
+            ),
           ),
         ),
         Flexible(

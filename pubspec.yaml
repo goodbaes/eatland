@@ -19,6 +19,7 @@ dependencies:
   animated_text: ^1.0.2
   animated_text_kit: ^4.2.1
   dartx: ^0.7.1
+  responsive_framework: ^0.1.4
 
 dev_dependencies:
   flutter_test:

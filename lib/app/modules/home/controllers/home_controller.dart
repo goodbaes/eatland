@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:webapp/app/modules/basket/controllers/basket_controller.dart';
+import 'package:webapp/widgets/food_item.dart';
 import 'package:webapp/widgets/loading/food_loading.dart';
 
 const String imgUrlTest = "assets/images/food.png";
